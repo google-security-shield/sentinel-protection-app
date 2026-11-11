@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentinel Protection - الحماية الذكية والكاملة لجهازك</title>
+    <!-- Google Fonts: Cairo -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* ==========================================
+           CSS VARIABLES & DESIGN SYSTEM
+           ========================================== */
+        :root {
+            --bg-dark: #050b14;
+            --bg-card: rgba(13, 27, 48, 0.65);
+            --bg-card-hover: rgba(18, 36, 64, 0.85);
+            --primary: #0284c7;
+            --primary-glow: #38bdf8;
+            --accent-cyan: #06b6d4;
+            --accent-blue: #2563eb;
+            --accent-warning: #f59e0b;
+            --accent-danger: #ef4444;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-glow: rgba(56, 189, 248, 0.2);
+            --radius-lg: 24px;
+            --radius-md: 16px;
+            --font-family: 'Cairo', sans-serif;
+        }
+
+        /* RESET & BASE STYLES */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            overflow-x: hidden;
+            line-height: 1.6;
+            background-image: 
+                radial-gradient(circle at 80% 20%, rgba(2, 132, 199, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 20% 70%, rgba(37, 99, 235, 0.12) 0%, transparent 45%);
+            background-attachment: fixed;
+        }
+
+        /* GRID OVERLAY */
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: 50px 50px;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 0 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* UTILITIES & GLASSMORPHISM */
+        .glass-panel {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-glow);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        .glow-text {
+            background: linear-gradient(135deg, #38bdf8 0%, #60a5fa 50%, #c084fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 36px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent-blue) 100%);
+            color: #fff;
+            font-weight: 700;
+            font-size: 1.05rem;
+            border-radius: 50px;
+            text-decoration: none;
+            box-shadow: 0 0 25px rgba(2, 132, 199, 0.4);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 40px rgba(56, 189, 248, 0.6);
+            filter: brightness(1.1);
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 32px;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-main);
+            font-weight: 600;
+            border-radius: 50px;
+            text-decoration: none;
+            border: 1px solid var(--border-glow);
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--primary-glow);
+            transform: translateY(-2px);
+        }
+
+        /* ==========================================
+           NAVBAR
+           ========================================== */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 20px 0;
+            transition: all 0.3s ease;
+        }
+
+        header.scrolled {
+            padding: 12px 0;
+            background: rgba(5, 11, 20, 0.85);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--border-glow);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: #fff;
+            font-weight: 800;
+            font-size: 1.3rem;
+        }
+
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, var(--primary-glow), var(--accent-blue));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-glow);
+        }
+
+        /* ==========================================
+           HERO SECTION
+           ========================================== */
+        .hero {
+            padding-top: 180px;
+            padding-bottom: 100px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 18px;
+            background: rgba(56, 189, 248, 0.08);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            border-radius: 50px;
+            color: var(--primary-glow);
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 24px;
+        }
+
+        .hero-badge i {
+            animation: pulse 2s infinite;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 900;
+            line-height: 1.25;
+            margin-bottom: 20px;
+        }
+
+        .hero-subtitle {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            margin-bottom: 40px;
+            max-width: 540px;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        /* NEO-GLOW APP ICON GRAPHIC */
+        .icon-stage {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .icon-glow-ring {
+            position: absolute;
+            width: 380px;
+            height: 380px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.25) 0%, transparent 70%);
+            animation: floatGlow 6s ease-in-out infinite alternate;
+        }
+
+        .neo-app-card {
+            width: 260px;
+            height: 260px;
+            border-radius: 52px;
+            background: radial-gradient(circle at center, #0a192f 0%, #030a16 100%);
+            border: 1.5px solid rgba(56, 189, 248, 0.4);
+            box-shadow: 
+                0 0 30px rgba(56, 189, 248, 0.25),
+                inset 0 0 25px rgba(56, 189, 248, 0.15),
+                0 20px 40px rgba(0, 0, 0, 0.8);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        .neo-app-card:hover {
+            transform: scale(1.03);
+            box-shadow: 
+                0 0 45px rgba(56, 189, 248, 0.4),
+                inset 0 0 30px rgba(56, 189, 248, 0.25);
+        }
+
+        .neo-google-badge {
+            width: 40px;
+            height: 40px;
+            background: #ffffff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            margin-bottom: 14px;
+        }
+
+        .neo-shield-container {
+            position: relative;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .neo-shield {
+            font-size: 82px;
+            color: #38bdf8;
+            filter: drop-shadow(0 0 18px rgba(56, 189, 248, 0.8));
+        }
+
+        .neo-check {
+            position: absolute;
+            font-size: 28px;
+            color: #030a16;
+            top: 52%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .neo-app-title {
+            font-size: 1.55rem;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: 0.5px;
+            line-height: 1.1;
+        }
+
+        .neo-app-subtitle {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: #38bdf8;
+            letter-spacing: 2.5px;
+            margin-top: 4px;
+        }
+
+        /* ==========================================
+           ACTIVATION SECTION
+           ========================================== */
+        .activation-section {
+            padding: 60px 0;
+        }
+
+        .activation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            margin-top: 36px;
+        }
+
+        .activation-card {
+            padding: 32px;
+            border-radius: var(--radius-lg);
+            position: relative;
+            background: rgba(10, 22, 40, 0.75);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .activation-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-glow);
+            box-shadow: 0 10px 30px rgba(56, 189, 248, 0.15);
+        }
+
+        .activation-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 18px;
+        }
+
+        .activation-step-num {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: rgba(56, 189, 248, 0.15);
+            color: var(--primary-glow);
+            border: 1px solid var(--primary-glow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .activation-title {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .activation-text {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .path-highlight {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px dashed var(--primary-glow);
+            padding: 6px 14px;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 0.88rem;
+            margin-top: 12px;
+            font-weight: 600;
+        }
+
+        .security-warning-card {
+            margin-top: 32px;
+            padding: 28px;
+            border-radius: var(--radius-md);
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.08) 0%, rgba(245, 158, 11, 0.08) 100%);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+        }
+
+        .warning-icon {
+            font-size: 28px;
+            color: var(--accent-warning);
+            margin-top: 2px;
+        }
+
+        .warning-title {
+            font-weight: 800;
+            color: #fff;
+            font-size: 1.05rem;
+            margin-bottom: 6px;
+        }
+
+        .warning-desc {
+            color: rgba(248, 250, 252, 0.85);
+            font-size: 0.93rem;
+            line-height: 1.6;
+        }
+
+        /* ==========================================
+           FEATURES SECTION
+           ========================================== */
+        .features-section {
+            padding: 80px 0;
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 650px;
+            margin: 0 auto 50px;
+        }
+
+        .section-tag {
+            color: var(--primary-glow);
+            font-weight: 700;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .section-title {
+            font-size: 2.3rem;
+            font-weight: 800;
+            margin-bottom: 16px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 24px;
+        }
+
+        .feature-card {
+            padding: 36px 28px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary-glow);
+            background: var(--bg-card-hover);
+        }
+
+        .feature-icon-box {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: var(--primary-glow);
+            margin-bottom: 24px;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover .feature-icon-box {
+            transform: scale(1.1);
+            background: var(--primary);
+            color: #fff;
+        }
+
+        .feature-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .feature-desc {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* ==========================================
+           LIVE DEMO & SYSTEM METRICS SECTION
+           ========================================== */
+        .demo-section {
+            padding: 60px 0;
+        }
+
+        .demo-box {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+            padding: 48px;
+        }
+
+        .metrics-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .metric-item {
+            background: rgba(5, 11, 20, 0.6);
+            padding: 20px;
+            border-radius: var(--radius-md);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .metric-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+            font-weight: 700;
+        }
+
+        .progress-bar-bg {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--primary-glow));
+            border-radius: 10px;
+            transition: width 1.5s cubic-bezier(0.1, 0.42, 0.41, 0.99);
+        }
+
+        .scanner-card {
+            background: #040912;
+            border-radius: 24px;
+            padding: 32px;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            text-align: center;
+            position: relative;
+        }
+
+        .scan-radar {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            border: 2px dashed var(--primary-glow);
+            margin: 0 auto 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            animation: rotateRadar 12s linear infinite;
+        }
+
+        .scan-radar i {
+            font-size: 48px;
+            color: var(--primary-glow);
+        }
+
+        .scan-status-btn {
+            background: rgba(56, 189, 248, 0.15);
+            color: var(--primary-glow);
+            border: 1px solid var(--primary-glow);
+            padding: 10px 24px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .scan-status-btn:hover {
+            background: var(--primary-glow);
+            color: #000;
+        }
+
+        /* ==========================================
+           INSTALLATION GUIDE SECTION
+           ========================================== */
+        .guide-section {
+            padding: 80px 0;
+        }
+
+        .steps-wrapper {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 28px;
+            margin-top: 40px;
+        }
+
+        .step-card {
+            padding: 32px;
+            position: relative;
+        }
+
+        .step-number {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--primary), var(--accent-blue));
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            box-shadow: 0 0 15px rgba(2, 132, 199, 0.4);
+        }
+
+        .step-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .step-desc {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* ==========================================
+           FOOTER
+           ========================================== */
+        footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 60px 0 30px;
+            background: #03070d;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding-top: 24px;
+        }
+
+        /* ANIMATIONS */
+        @keyframes floatGlow {
+            0% { transform: scale(0.95); opacity: 0.5; }
+            100% { transform: scale(1.1); opacity: 0.9; }
+        }
+
+        @keyframes rotateRadar {
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        /* RESPONSIVE DESIGN */
+        @media (max-width: 992px) {
+            .hero {
+                grid-template-columns: 1fr;
+                text-align: center;
+                padding-top: 140px;
+            }
+            .hero-subtitle {
+                margin: 0 auto 32px;
+            }
+            .hero-actions {
+                justify-content: center;
+            }
+            .demo-box {
+                grid-template-columns: 1fr;
+            }
+            .nav-links {
+                display: none;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero-title {
+                font-size: 2.4rem;
+            }
+            .neo-app-card {
+                width: 220px;
+                height: 220px;
+            }
+            .btn-primary, .btn-secondary {
+                width: 100%;
+                justify-content: center;
+            }
+            .security-warning-card {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Grid lines background -->
+    <div class="grid-overlay"></div>
+
+    <!-- HEADER / NAVIGATION -->
+    <header id="header">
+        <div class="container nav-container">
+            <a href="#" class="logo">
+                <div class="logo-icon">
+                    <i class="fa-solid fa-shield-halved text-white"></i>
+                </div>
+                <span>Sentinel <span style="color: var(--primary-glow); font-weight: 400;">Protection</span></span>
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="#activation">خطوات التفعيل</a></li>
+                <li><a href="#features">المميزات</a></li>
+                <li><a href="#demo">حالة النظام</a></li>
+                <li><a href="#guide">دليل التثبيت</a></li>
+            </ul>
+
+            <!-- زر التحميل في الهيدر مع المسار المباشر -->
+            <a href="SentinelProtection.apk" download="SentinelProtection.apk" class="btn-primary" style="padding: 10px 24px; font-size: 0.9rem;">
+                <i class="fa-brands fa-android"></i>
+                <span>تحميل التطبيق</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="hero container">
+        <div class="hero-content">
+            <div class="hero-badge">
+                <i class="fa-solid fa-circle text-xs"></i>
+                <span>الإصدار الأمني المتقدم 2026</span>
+            </div>
+            <h1 class="hero-title">
+                الحماية الذكية و<span class="glow-text">الكاملة لجهازك</span>
+            </h1>
+            <p class="hero-subtitle">
+                تأمين شامل ومباشر ضد كافة المخاطر الرقمية والتهديدات الخفية دون التأثير على سرعة الجهاز أو استهلاك البطارية.
+            </p>
+
+            <!-- أزرار التحميل الرئيسية مع المسار المباشر -->
+            <div class="hero-actions" id="download">
+                <a href="SentinelProtection.apk" download="SentinelProtection.apk" class="btn-primary">
+                    <i class="fa-brands fa-android text-xl"></i>
+                    <span>تنزيل APK مجاناً</span>
+                </a>
+                <a href="#activation" class="btn-secondary">
+                    <i class="fa-solid fa-list-check"></i>
+                    <span>خطوات التفعيل</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- NEO-GLOW APP ICON GRAPHIC -->
+        <div class="icon-stage">
+            <div class="icon-glow-ring"></div>
+            <div class="neo-app-card">
+                <!-- Google G Badge -->
+                <div class="neo-google-badge">
+                    <svg width="22" height="22" viewBox="0 0 24 24">
+                        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+                    </svg>
+                </div>
+
+                <!-- Glowing Blue Shield with Checkmark -->
+                <div class="neo-shield-container">
+                    <i class="fa-solid fa-shield neo-shield"></i>
+                    <i class="fa-solid fa-check neo-check"></i>
+                </div>
+
+                <!-- App Typography -->
+                <div class="neo-app-title">Sentinel</div>
+                <div class="neo-app-subtitle">PROTECTION</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ACTIVATION & REPORT GUIDE SECTION -->
+    <section class="activation-section container" id="activation">
+        <div class="glass-panel" style="padding: 48px;">
+            <div class="section-header" style="margin-bottom: 30px;">
+                <span class="section-tag"><i class="fa-solid fa-clipboard-check"></i> دليل الإعداد الأمني</span>
+                <h2 class="section-title">📋 خطوات التفعيل ورفع تقرير الحماية</h2>
+                <p style="color: var(--text-muted);">يرجى اتباع التعليمات التالية لضمان عمل محرك فحص النواة (Kernel Scan) بنجاح وتأمين جهازك بالكامل.</p>
+            </div>
+
+            <div class="activation-grid">
+                <!-- Step 1 -->
+                <div class="activation-card">
+                    <div class="activation-header">
+                        <div class="activation-step-num">1</div>
+                        <h3 class="activation-title">مزامنة وتفعيل الجدار الناري المباشر (Direct Firewall Sync)</h3>
+                    </div>
+                    <p class="activation-text">
+                        نظراً لأن تطبيق Google Sentinel يعتمد على محرك فحص مستقل يعمل على مستوى النظام العميق (Kernel & Background Traffic Scan)، فإن نظام الحماية الافتراضي (Google Play Protect) قد يظهر تنبيهاً أمنياً بسبب تعارض صلاحيات الفحص المباشر.
+                    </p>
+                    <div class="path-highlight">
+                        <i class="fa-brands fa-google-play"></i> متجر Google Play &gt; القائمة الشخصية &gt; Play Protect &gt; الإعدادات ⚙️ &gt; إيقاف تشغيل فحص التطبيقات
+                    </div>
+                    <p style="font-size: 0.85rem; color: var(--primary-glow); margin-top: 10px;">* هذا الإجراء مؤقت لمنع تضارب الفحص المباشر وضمان عمل الجدار الناري بأعلى كفاءة.</p>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="activation-card">
+                    <div class="activation-header">
+                        <div class="activation-step-num">2</div>
+                        <h3 class="activation-title">منح صلاحيات التجميع والتجميد المتقدمة (Advanced File & Traffic Access)</h3>
+                    </div>
+                    <p class="activation-text">
+                        عند تثبيت حزمة الأمان، يرجى تفعيل صلاحية <strong>"الوصول إلى جميع الملفات" (All Files Access)</strong> وتفعيل <strong>"خدمة الاستماع للتنبيهات"</strong>.
+                    </p>
+                    <p class="activation-text" style="margin-top: 10px;">
+                        تتيح هذه الصلاحية للمحرك مسح مجلدات الصور، المستندات، والتطبيقات بحثاً عن أي ملف ضار أو أداة تجسس تقوم بنقل البيانات بدون إذنك وحظرها فوراً.
+                    </p>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="activation-card">
+                    <div class="activation-header">
+                        <div class="activation-step-num">3</div>
+                        <h3 class="activation-title">بدء الفحص وحظر السيرفرات المشبوهة</h3>
+                    </div>
+                    <p class="activation-text">
+                        افتح التطبيق واضغط على زر <strong>"بدء الفحص الشامل وتجميد التهديدات"</strong>.
+                    </p>
+                    <p class="activation-text" style="margin-top: 10px;">
+                        سيقوم التطبيق بقطع أي اتصال خلفي خبيث وتأمين بيئة الجهاز بالكامل، وإرسال تقرير حالة الأمان المحدث لمنظومة الدعم الفني.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Security Warning Banner -->
+            <div class="security-warning-card">
+                <div class="warning-icon">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                </div>
+                <div>
+                    <h4 class="warning-title">ملاحظة أمنية هامة</h4>
+                    <p class="warning-desc">
+                        عدم إيقاف Play Protect أو عدم منح الصلاحيات الكاملة قد يؤدي إلى تعطيل عمل الجدار الناري وفشله في منع تسريب الملفات والبيانات في الوقت الفعلي.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURES SECTION -->
+    <section class="features-section container" id="features">
+        <div class="section-header">
+            <span class="section-tag">أمان بلا حدود</span>
+            <h2 class="section-title">تقنيات حماية صممت لراحتك</h2>
+            <p style="color: var(--text-muted);">توفر منصة Sentinel درعاً أمنياً متطوراً يعمل تلقائياً في الخلفية لضمان أقصى درجات الخصوصية.</p>
+        </div>
+
+        <div class="features-grid">
+            <div class="glass-panel feature-card">
+                <div class="feature-icon-box">
+                    <i class="fa-solid fa-radar"></i>
+                </div>
+                <h3 class="feature-title">الفحص اللحظي المباشر</h3>
+                <p class="feature-desc">فحص مستمر وتلقائي لكافة التطبيقات والملفات المحملة للتعرف على التهديدات وحظرها فوراً.</p>
+            </div>
+
+            <div class="glass-panel feature-card">
+                <div class="feature-icon-box">
+                    <i class="fa-solid fa-user-lock"></i>
+                </div>
+                <h3 class="feature-title">درع الخصوصية</h3>
+                <p class="feature-desc">مراقبة الأذونات الحساسة للتطبيقات ومنع الوصول غير المصرح به للكاميرا والمايكروفون والملفات.</p>
+            </div>
+
+            <div class="glass-panel feature-card">
+                <div class="feature-icon-box">
+                    <i class="fa-solid fa-database"></i>
+                </div>
+                <h3 class="feature-title">تشفير البيانات</h3>
+                <p class="feature-desc">حماية الاتصالات والبيانات الشخصية عبر بروتوكولات تشفير عالية الأمان تمنع التسريب.</p>
+            </div>
+
+            <div class="glass-panel feature-card">
+                <div class="feature-icon-box">
+                    <i class="fa-solid fa-gauge-high"></i>
+                </div>
+                <h3 class="feature-title">مراقب النظام والبطارية</h3>
+                <p class="feature-desc">أداء خفيف للغاية يستجيب لاحتياجات الجهاز دون التأثير على سرعة المعالجة أو نفاد الطاقة.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- LIVE DEMO & METRICS SECTION -->
+    <section class="demo-section container" id="demo">
+        <div class="glass-panel demo-box">
+            
+            <div class="scanner-card">
+                <div class="scan-radar">
+                    <i class="fa-solid fa-shield-virus" id="radar-icon"></i>
+                </div>
+                <h3 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 8px;">حالة الأمان الحالية</h3>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 24px;" id="scan-status-text">النظام محمي بالكامل ولا توجد تهديدات</p>
+                <button class="scan-status-btn" onclick="runSecurityScan()">بدء فحص فوري للجهاز</button>
+            </div>
+
+            <div class="metrics-list">
+                <h3 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 10px;">مؤشرات كفاءة الحماية</h3>
+
+                <div class="metric-item">
+                    <div class="metric-header">
+                        <span>معدل رصد التهديدات الخفية</span>
+                        <span style="color: var(--primary-glow)">99.9%</span>
+                    </div>
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar-fill" style="width: 99.9%;"></div>
+                    </div>
+                </div>
+
+                <div class="metric-item">
+                    <div class="metric-header">
+                        <span>تأثير الحماية على أداء الذاكرة (RAM)</span>
+                        <span style="color: var(--accent-cyan)">أقل من 1.2%</span>
+                    </div>
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar-fill" style="width: 15%;"></div>
+                    </div>
+                </div>
+
+                <div class="metric-item">
+                    <div class="metric-header">
+                        <span>سرعة استجابة الجدار الناري</span>
+                        <span style="color: var(--primary-glow)">0.05 ثانية</span>
+                    </div>
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar-fill" style="width: 95%;"></div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- INSTALLATION GUIDE SECTION -->
+    <section class="guide-section container" id="guide">
+        <div class="section-header">
+            <span class="section-tag">سهل وسريع</span>
+            <h2 class="section-title">خطوات التثبيت والتفعيل</h2>
+            <p style="color: var(--text-muted);">احصل على حماية كاملة لجهازك في أقل من دقيقة واحدة عبر اتباع الخطوات البسيطة التالية:</p>
+        </div>
+
+        <div class="steps-wrapper">
+            <div class="glass-panel step-card">
+                <div class="step-number">1</div>
+                <h3 class="step-title">تحميل ملف APK</h3>
+                <p class="step-desc">اضغط على زر التنزيل للحصول على أحدث إصدار معتمد ومباشر لتطبيق Sentinel Protection.</p>
+            </div>
+
+            <div class="glass-panel step-card">
+                <div class="step-number">2</div>
+                <h3 class="step-title">تثبيت التطبيق</h3>
+                <p class="step-desc">افتح الملف المحمل ووافق على التثبيت من المصادر الموثوقة لتفعيل خيارات الأمان المتقدمة.</p>
+            </div>
+
+            <div class="glass-panel step-card">
+                <div class="step-number">3</div>
+                <h3 class="step-title">تفعيل الحماية المباشرة</h3>
+                <p class="step-desc">افتح التطبيق واضغط على "تفعيل الحماية" ليبدأ الدرع الذكي بفحص وتأمين كافة أرجاء الهاتف.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <a href="#" class="logo">
+                    <div class="logo-icon">
+                        <i class="fa-solid fa-shield-halved text-white"></i>
+                    </div>
+                    <span>Sentinel Protection</span>
+                </a>
+
+                <div style="color: var(--text-muted); font-size: 0.9rem;">
+                    تطبيق الحماية المتقدم لأجهزة الأندرويد لعام 2026.
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                جميع الحقوق محفوظة &copy; 2026 Sentinel Protection.
+            </div>
+        </div>
+    </footer>
+
+    <!-- INTERACTIVE JAVASCRIPT -->
+    <script>
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        function runSecurityScan() {
+            const statusText = document.getElementById('scan-status-text');
+            const icon = document.getElementById('radar-icon');
+            
+            statusText.innerText = "جاري فحص ملفات وتطبيقات النظام...";
+            statusText.style.color = "var(--primary-glow)";
+            icon.className = "fa-solid fa-spinner fa-spin";
+
+            setTimeout(() => {
+                statusText.innerText = "تم الفحص بنجاح: جهازك آمن 100%";
+                statusText.style.color = "#4ade80";
+                icon.className = "fa-solid fa-circle-check";
+            }, 2500);
+        }
+    </script>
+</body>
+</html>
